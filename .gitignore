@@ -4,3 +4,4 @@
 /pylds/*.so
 MANIFEST
 *.pyc
+*.egg-info/*

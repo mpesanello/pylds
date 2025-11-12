@@ -45,7 +45,11 @@ class build_ext(_build_ext):
     # see http://stackoverflow.com/q/19919905 for explanation
     def finalize_options(self):
         _build_ext.finalize_options(self)
-        __builtins__.__NUMPY_SETUP__ = False
+        try:
+            setattr(__builtins__, '__NUMPY_SETUP__', False)
+        except Exception:
+            # __builtins__ may be a dict; skip setting if so
+            pass
         import numpy as np
         self.include_dirs.append(np.get_include())
 
@@ -62,7 +66,7 @@ setup(
     install_requires=[
         'numpy>=1.9.3', 'scipy>=0.16', 'matplotlib',
         'pybasicbayes', 'autograd'],
-    setup_requires=['future'],
+    setup_requires=['numpy','future'],
     ext_modules=ext_modules,
     classifiers=[
         'Intended Audience :: Science/Research',
